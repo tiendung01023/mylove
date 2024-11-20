@@ -1,40 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tráng miệng</title>
-    <link rel="stylesheet" href="css/dessert.css" />
-  </head>
-  <body>
-    <div id="dessertquestion">Rồi mình tráng miệng với gì ta</div>
 
-    <div class="dessert-selection">
-      <div class="dessert-item">
-        <img src="food/boba.jpeg" alt="boba" />
-        <label
-          ><input type="checkbox" name="dessert" value="boba" /> Tà tưa</label
-        >
-      </div>
-      
-      <div class="dessert-item">
-        <img src="food/che.jpeg" alt="che" />
-        <label><input type="checkbox" name="dessert" value="che" /> Chè</label>
-      </div>
-      <div class="dessert-item">
-        <img src="food/taiyaki.jpeg" alt="taiyaki" />
-        <label
-          ><input type="checkbox" name="dessert" value="taiyaki" />
-          Kem</label
-        >
-      </div>
-      <div class="dessert-item">
-        <img src="food/no.jpg" alt="no" />
-        <label><input type="checkbox" name="dessert" value="no" /> Món gì cũng được - em muốn là được</label>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tráng miệng</title>
+  <link rel="stylesheet" href="css/dessert.css" />
+</head>
+
+<body>
+  <div id="dessertquestion">Rồi mình tráng miệng với gì ta</div>
+
+  <div class="dessert-selection">
+    <div class="dessert-item">
+      <img src="food/boba.jpeg" alt="boba" />
+      <label><input type="checkbox" name="dessert" value="Tà tưa" />Tà tưa</label>
     </div>
-    <button class="button" onclick="location.href='activities.html'">
+
+    <div class="dessert-item">
+      <img src="food/che.jpeg" alt="che" />
+      <label><input type="checkbox" name="dessert" value="Chè" />Chè</label>
+    </div>
+    <div class="dessert-item">
+      <img src="food/taiyaki.jpeg" alt="taiyaki" />
+      <label><input type="checkbox" name="dessert" value="Kem" />Kem</label>
+    </div>
+    <div class="dessert-item">
+      <img src="food/no.jpg" alt="no" />
+      <label><input type="checkbox" name="dessert" value="Món gì cũng được - em muốn là được" />Món gì cũng được - em
+        muốn là được</label>
+    </div>
+  </div>
+  <button class="button" onclick="sendToSlack()">
       Tới luôn
     </button>
   </body>
 </html>
+
+
+<script>
+  function sendToSlack() {
+    const selectedFoods = Array.from(document.querySelectorAll('input[name="dessert"]:checked')).map(checkbox =>
+      checkbox.value);
+
+    const payload = {
+      channel: 'C07LCNE5JE7',
+      text: `Tráng miệng đã chọn: ${selectedFoods.join(', ')}`,
+    };
+
+    fetch('https://giole.glitch.me/send_private', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: JSON.stringify(payload),
+    })
+      .then(response => {
+        if (response.ok) {
+          location.href = 'activities.html';
+        } else {
+          alert('Có lỗi xảy ra.');
+        }
+      })
+      .catch(error => {
+        console.error('Lỗi:', error);
+        alert('Có lỗi xảy ra.');
+      });
+  }
+</script>

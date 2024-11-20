@@ -1,63 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Món ăn</title>
-    <link rel="stylesheet" href="css/food.css" />
-  </head>
-  <body>
-    <div id="foodquestion">
-      <b>Vợ iu muốn ăn gì nè?</b>
-    </div>
 
-    <div class="food-selection">
-      <div class="food-item">
-        <img src="food/steak.jpg" alt="steak" />
-        <label><input type="checkbox" name="food" value="steak" /> Bò beef-steak</label>
-      </div>
-      <div class="food-item">
-        <img src="food/lotteria.jpg" alt="Burgers, fries and fried chicken" />
-        <label
-          ><input
-            type="checkbox"
-            name="food"
-            value="Burgers, fries and fried chicken"
-          />
-          Lotteria</label
-        >
-      </div>
-      <div class="food-item">
-        <img src="food/koreanfood.jpeg" alt="koreanfood" />
-        <label
-          ><input type="checkbox" name="food" value="Korean food" /> Mì cay hot-teen</label
-        >
-      </div>
-      <div class="food-item">
-        <img src="food/apa.webp" alt="apa" />
-        <label
-          ><input type="checkbox" name="food" value="hotapa" /> Apa</label
-        >
-      </div>
-      <div class="food-item">
-        <img src="food/joppii.jpeg" alt="joppii" />
-        <label><input type="checkbox" name="food" value="joppii" /> Joppii</label>
-      </div>
-      <div class="food-item">
-        <img src="food/pizza.jpeg" alt="pizza" />
-        <label><input type="checkbox" name="food" value="pizza" /> Pizza</label>
-      </div>
-      <div class="food-item">
-        <img src="food/bundau.png" alt="bundau" />
-        <label><input type="checkbox" name="food" value="bundau" /> Bún đậu</label>
-      </div>
-      <div class="food-item">
-        <img src="food/no.jpg" alt="no" />
-        <label><input type="checkbox" name="food" value="no" /> Món gì cũng được - em muốn là được</label>
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Món ăn</title>
+  <link rel="stylesheet" href="css/food.css" />
+</head>
+
+<body>
+  <div id="foodquestion">
+    <b>Vợ iu muốn ăn gì nè?</b>
+  </div>
+
+  <div class="food-selection">
+    <div class="food-item">
+      <img src="food/steak.jpg" alt="steak" />
+      <label><input type="checkbox" name="food" value="Bò beef-steak" />Bò beef-steak</label>
     </div>
-    <button class="button" onclick="location.href='dessert.html'">
-      Tới luôn
-    </button>
-  </body>
+    <div class="food-item">
+      <img src="food/lotteria.jpg" alt="Lotteria" />
+      <label><input type="checkbox" name="food" value="Lotteria" />
+        Lotteria</label>
+    </div>
+    <div class="food-item">
+      <img src="food/koreanfood.jpeg" alt="koreanfood" />
+      <label><input type="checkbox" name="food" value="Mì cay hot-teen" />Mì cay hot-teen</label>
+    </div>
+    <div class="food-item">
+      <img src="food/apa.webp" alt="apa" />
+      <label><input type="checkbox" name="food" value="Apa" />Apa</label>
+    </div>
+    <div class="food-item">
+      <img src="food/joppii.jpeg" alt="joppii" />
+      <label><input type="checkbox" name="food" value="Joppii" />Joppii</label>
+    </div>
+    <div class="food-item">
+      <img src="food/pizza.jpeg" alt="pizza" />
+      <label><input type="checkbox" name="food" value="Pizza" />Pizza</label>
+    </div>
+    <div class="food-item">
+      <img src="food/bundau.png" alt="bundau" />
+      <label><input type="checkbox" name="food" value="Bún đậu" />Bún đậu</label>
+    </div>
+    <div class="food-item">
+      <img src="food/no.jpg" alt="no" />
+      <label><input type="checkbox" name="food" value="Món gì cũng được - em muốn là được" />Món gì cũng được - em muốn
+        là được</label>
+    </div>
+  </div>
+  <button class="button" onclick="sendToSlack()">
+    Tới luôn
+  </button>
+</body>
+
 </html>
+
+<script>
+  function sendToSlack() {
+    const selectedFoods = Array.from(document.querySelectorAll('input[name="food"]:checked'))
+      .map(checkbox => checkbox.value);
+
+    const payload = {
+      channel: 'C07LCNE5JE7',
+      text: `Món ăn đã chọn: ${selectedFoods.join(', ')}`,
+    };
+
+    fetch('https://giole.glitch.me/send_private', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: JSON.stringify(payload),
+    })
+      .then(response => {
+        if (response.ok) {
+          location.href = 'dessert.html';
+        } else {
+          alert('Có lỗi xảy ra.');
+        }
+      })
+      .catch(error => {
+        console.error('Lỗi:', error);
+        alert('Có lỗi xảy ra.');
+      });
+  }
+</script>

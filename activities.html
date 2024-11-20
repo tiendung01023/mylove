@@ -1,67 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Phim</title>
-    <link rel="stylesheet" href="css/activities.css" />
-  </head>
-  <body>
-    <div id="activityquestion"><b>Rồi mình đi xem phim nhỉ?</b></div>
-    <div class="activities-selection">
-      <div class="activity-item">
-        <img src="activities/p1.jpg" alt="aquarium" />
-        <label
-          ><input
-            type="checkbox"
-            name="activities"
-            value="aquarium"
-          />Cười xuyên biên giới</label
-        >
-      </div>
-      <div class="activity-item">
-        <img src="activities/p2.jpg" alt="cinema" />
-        <label
-          ><input
-            type="checkbox"
-            name="activities"
-            value="cinema"
-          />Phi vụ rừng xanh</label
-        >
-      </div>
-      <div class="activity-item">
-        <img src="activities/p3.jpg" alt="ceramics" />
-        <label
-          ><input
-            type="checkbox"
-            name="activities"
-            value="ceramics"
-          />Công chúa nổi loạn</label
-        >
-      </div>
-      <div class="activity-item">
-        <img src="activities/p4.jpg" alt="kunsthalle" />
-        <label
-          ><input
-            type="checkbox"
-            name="activities"
-            value="kunsthalle"
-          />Robot hoang dã</label
-        >
-      </div>
-      <div class="activity-item">
-        <img src="activities/no.jpg" alt="park.jpeg" />
-        <label
-          ><input
-            type="checkbox"
-            name="activities"
-            value="park.jpeg"
-          />Mình đi chơi cái khác đi</label
-        >
-      </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Phim</title>
+  <link rel="stylesheet" href="css/activities.css" />
+</head>
+
+<body>
+  <div id="activityquestion"><b>Rồi mình đi xem phim nhỉ?</b></div>
+  <div class="activities-selection">
+    <div class="activity-item">
+      <img src="activities/p1.jpg" alt="aquarium" />
+      <label><input type="checkbox" name="activities" value="Cười xuyên biên giới" />Cười xuyên biên giới</label>
     </div>
-    <button class="button" onclick="location.href='lastpage.html'">
-      Tới luôn
-    </button>
-  </body>
+    <div class="activity-item">
+      <img src="activities/p2.jpg" alt="cinema" />
+      <label><input type="checkbox" name="activities" value="Phi vụ rừng xanh" />Phi vụ rừng xanh</label>
+    </div>
+    <div class="activity-item">
+      <img src="activities/p3.jpg" alt="ceramics" />
+      <label><input type="checkbox" name="activities" value="Công chúa nổi loạn" />Công chúa nổi loạn</label>
+    </div>
+    <div class="activity-item">
+      <img src="activities/p4.jpg" alt="kunsthalle" />
+      <label><input type="checkbox" name="activities" value="Robot hoang dã" />Robot hoang dã</label>
+    </div>
+    <div class="activity-item">
+      <img src="activities/no.jpg" alt="park.jpeg" />
+      <label><input type="checkbox" name="activities" value="Mình đi chơi cái khác đi" />Mình đi chơi cái khác đi</label>
+    </div>
+  </div>
+  <button class="button" onclick="sendToSlack()">
+    Tới luôn
+  </button>
+</body>
+
 </html>
+
+
+<script>
+  function sendToSlack() {
+    const selectedFoods = Array.from(document.querySelectorAll('input[name="activities"]:checked')).map(checkbox =>
+      checkbox.value);
+
+    const payload = {
+      channel: 'C07LCNE5JE7',
+      text: `Phim đã chọn: ${selectedFoods.join(', ')}`,
+    };
+
+    fetch('https://giole.glitch.me/send_private', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: JSON.stringify(payload),
+    })
+      .then(response => {
+        if (response.ok) {
+          location.href = 'lastpage.html';
+        } else {
+          alert('Có lỗi xảy ra.');
+        }
+      })
+      .catch(error => {
+        console.error('Lỗi:', error);
+        alert('Có lỗi xảy ra.');
+      });
+  }
+</script>
